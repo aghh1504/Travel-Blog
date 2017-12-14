@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { fetchPostsList } from '../../Redux/Actions'
+import { fetchPosts } from '../../Redux/Actions'
 import PostItem from '../PostItem'
 
 class PostList extends Component {
 
   componentDidMount() {
-    this.props.fetchPostsList()
+    this.props.fetchPosts()
   }
 
   render() {
@@ -33,7 +33,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  fetchPostsList
+  fetchPosts
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostList)

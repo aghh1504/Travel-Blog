@@ -2,7 +2,7 @@ import *as types from './types'
 import {BASE_URL} from '../../config'
 import axios from 'axios'
 
-export const fetchPostsList = () => {
+export const fetchPosts = () => {
   return dispatch => {
     dispatch({
       type: types.GET_POSTS_START
@@ -17,77 +17,127 @@ export const fetchPostsList = () => {
       .catch(error => {
         dispatch({
           type: types.GET_POSTS_ERROR,
-          payload:error
+          payload: error
         })
       })
   }
 }
 
-export const fetchFavouritePostList = () => {
+export const fetchFavouritePosts = () => {
   return dispatch => {
-    axios.get(`/GetFavouritePosts`)
-      .then(res => dispatch(setFavouritePostList(res.data)))
-      .catch(err => console.log(err))
+    dispatch({
+      type: types.GET_FAVORITE_POSTS_START
+    })
+     axios.get(`${BASE_URL}/GetFavouritePosts`)
+      .then(res => {
+        dispatch({
+          type: types.GET_FAVORITE_POSTS_SUCCESS
+          payload: res.data
+        })
+      })
+      .catch(error => {
+        dispatch({
+          type: types.GET_FAVORITE_POSTS_ERROR,
+          payload: error
+        })
+      })
   }
 }
 
 export const addPost = post => {
   return dispatch => {
-    axios.post(`/AddNewPost`, {post})
+    dispatch({
+      type: types.ADD_POST_START
+    })
+     axios.post(`${BASE_URL}/AddNewPost`, {post})
       .then(res => {
-        dispatch(addPostToTheList())
+        dispatch({
+          type: types.GET_FAVORITE_POSTS_SUCCESS,
+          payload: post
+        })
         dispatch(fetchPostsList())
       })
-      .catch(err => console.log(err))
+      .catch(error => {
+        dispatch({
+          type: types.GET_FAVORITE_POSTS_ERROR,
+          payload: error
+        })
+      })
   }
 }
 
 export const updatePost = post => {
   return dispatch => {
-    axios.put(`/UpdatePost`, {post})
-    .then(res => {
-      dispatch(updatePostToTheList())
-      dispatch(fetchPostsList())
+    dispatch({
+      type: types.UPDATE_POST_START
     })
-    .catch(err => console.log(err))
+     axios.put(`${BASE_URL}/UpdatePost`, {post})
+      .then(res => {
+        dispatch({
+          type: types.UPDATE_POST_SUCCESS,
+          payload: post
+        })
+        dispatch(fetchPostsList())
+      })
+      .catch(error => {
+        dispatch({
+          type: types.UPDATE_POST_ERROR,
+          payload: error
+        })
+      })
   }
 }
 
 export const deletePost = post => {
   return dispatch => {
-    axios.put(`/Post/${post.id}`, {post})
-    .then(res => {
-      dispatch(deletePostToTheList())
-      dispatch(fetchPostsList())
+    dispatch({
+      type: types.DELETE_POST_START
     })
-    .catch(err => console.log(err))
+     axios.put(`${BASE_URL}/Post/${post.id}`, {post})
+      .then(res => {
+        dispatch({
+          type: types.DELETE_POST_SUCCESS,
+          payload: post.id
+        })
+        dispatch(fetchPostsList())
+      })
+      .catch(error => {
+        dispatch({
+          type: types.DELETE_POST_ERROR,
+          payload: error
+        })
+      })
   }
 }
 
-export const setFavouritePostList = posts => {
-  return {
-    type: types.GET_FAVORITE_POSTS_LIST,
-    payload: posts
-  }
-}
-
-export const addPostToTheList = (post) => {
-  return {
-    type: types.ADD_POST,
-    payload: post
-  }
-}
-
-export const updatePostToTheList = (post) => {
-  return {
-    type: types.UPDATE_POST,
-    payload: post
-  }
-}
-
-export const deletePostToTheList = (postId) => {
-  return {
-    type: types.DELETE_POST,
-    payload: postId
-  }
-}
+//
+//
+//
+//
+// export const setFavouritePostList = posts => {
+//   return {
+//     type: types.GET_FAVORITE_POSTS_LIST,
+//     payload: posts
+//   }
+// }
+//
+// export const addPostToTheList = (post) => {
+//   return {
+//     type: types.ADD_POST,
+//     payload: post
+//   }
+// }
+//
+// export const updatePostToTheList = (post) => {
+//   return {
+//     type: types.UPDATE_POST,
+//     payload: post
+//   }
+// }
+//
+// export const deletePostToTheList = (postId) => {
+//   return {
+//     type: types.DELETE_POST,
+//     payload: postId
+//   }
+// }
