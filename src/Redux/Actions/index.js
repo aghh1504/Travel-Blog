@@ -31,7 +31,7 @@ export const fetchFavouritePosts = () => {
      axios.get(`${BASE_URL}/GetFavouritePosts`)
       .then(res => {
         dispatch({
-          type: types.GET_FAVORITE_POSTS_SUCCESS
+          type: types.GET_FAVORITE_POSTS_SUCCESS,
           payload: res.data
         })
       })
@@ -55,7 +55,7 @@ export const addPost = post => {
           type: types.GET_FAVORITE_POSTS_SUCCESS,
           payload: post
         })
-        dispatch(fetchPostsList())
+        dispatch(fetchPosts())
       })
       .catch(error => {
         dispatch({
@@ -77,7 +77,7 @@ export const updatePost = post => {
           type: types.UPDATE_POST_SUCCESS,
           payload: post
         })
-        dispatch(fetchPostsList())
+        dispatch(fetchPosts())
       })
       .catch(error => {
         dispatch({
@@ -99,7 +99,7 @@ export const deletePost = post => {
           type: types.DELETE_POST_SUCCESS,
           payload: post.id
         })
-        dispatch(fetchPostsList())
+        dispatch(fetchPosts())
       })
       .catch(error => {
         dispatch({

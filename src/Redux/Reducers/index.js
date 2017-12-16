@@ -31,21 +31,21 @@ export default function (state = initialState, action) {
       }
     }
 
-    case types.GET_FAVORITE_POSTS_LIST: {
+    case types.GET_FAVORITE_POSTS_START: {
       return {
         ...state,
         favouritePosts: action.payload
       }
     }
 
-    case types.ADD_POST: {
+    case types.ADD_POST_START: {
       return {
         ...state,
         posts: [...state.posts, action.payload]
       }
     }
 
-    case types.UPDATE_POST: {
+    case types.UPDATE_POST_START: {
       const updatedPost = action.payload
       const posts = state.posts
       const newPostId = posts.find(post => post.id === updatedPost.id)
@@ -62,7 +62,7 @@ export default function (state = initialState, action) {
       }
     }
 
-      case types.DELETE_POST: {
+      case types.DELETE_POST_START: {
         const deletedPostId = action.payload
         const newPostList = state.posts.find(post => post.id !== deletedPostId)
         return {
