@@ -8,14 +8,14 @@ const initialState = {
 }
 export default function (state = initialState, action) {
   switch (action.type) {
-    case types.GET_POSTS_START: {
+    case types.GET_POSTS(types.START): {
       return {
         ...state,
         isLoading: true,
         error: '',
       }
     }
-    case types.GET_POSTS_SUCCESS: {
+    case types.GET_POSTS(types.SUCCESS): {
       return {
         ...state,
         posts: action.payload,
@@ -23,7 +23,7 @@ export default function (state = initialState, action) {
         error: '',
       }
     }
-    case types.GET_POSTS_ERROR: {
+    case types.GET_POSTS(types.ERROR): {
       return {
         ...state,
         isLoading: false,
@@ -31,30 +31,28 @@ export default function (state = initialState, action) {
       }
     }
 
-    case types.GET_FAVORITE_POSTS_START: {
+    case types.GET_FAVORITE_POSTS(types.SUCCESS): {
       return {
         ...state,
         favouritePosts: action.payload
       }
     }
 
-    case types.ADD_POST_START: {
+    case types.ADD_POST(types.SUCCESS): {
       return {
         ...state,
-        posts: [...state.posts, action.payload]
+        posts: [action.payload, ...state.posts]
       }
     }
 
-    case types.UPDATE_POST_START: {
-      const updatedPost = action.payload
-      const posts = state.posts
-      const newPostId = posts.find(post => post.id === updatedPost.id)
-      posts[newPostId] = {
-        id: newPostId,
-        title: updatedPost.title,
-        description: updatedPost.description,
-        image: updatedPost.image,
-        favourite: updatedPost.favourite
+    case types.UPDATE_POST(types.START): {
+      const updatedPost = action.payload;
+      const posts = [...state.posts];
+      const existingPost = posts.find(post => Number(post.id) === Number(updatedPost.id));
+      if (existingPost) {
+        Object.assign(existingPost, updatedPost);
+      } else {
+        // TODO: error or just insert?
       }
       return {
         ...state,
@@ -62,9 +60,24 @@ export default function (state = initialState, action) {
       }
     }
 
-      case types.DELETE_POST_START: {
-        const deletedPostId = action.payload
-        const newPostList = state.posts.find(post => post.id !== deletedPostId)
+    case types.UPDATE_POST(types.SUCCESS): {
+      const updatedPost = action.payload;
+      const posts = [...state.posts];
+      const existingPost = posts.find(post => Number(post.id) === Number(updatedPost.id));
+      if (existingPost) {
+        Object.assign(existingPost, updatedPost);
+      } else {
+        // TODO: error or just insert?
+      }
+      return {
+        ...state,
+        posts: posts
+      }
+    }
+
+      case types.DELETE_POST(types.START): {
+        const deletedPostId = action.payload.id;
+        const newPostList = state.posts.filter(post => Number(post.id) !== Number(deletedPostId.id));
         return {
           ...state,
           posts: newPostList

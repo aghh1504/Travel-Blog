@@ -16,7 +16,7 @@ class PostList extends Component {
           {isLoading && <div>is loading...</div>}
           <ul>
             {
-              posts.map(post => <li><PostItem post={post} /></li>)
+              posts.map(post => <li key={post.id}><PostItem id={post.id} /></li>)
             }
           </ul>
         </div>
@@ -25,7 +25,6 @@ class PostList extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state)
   return {
     posts: state.posts,
     isLoading: state.isLoading,

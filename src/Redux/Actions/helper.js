@@ -5,40 +5,84 @@ import axios from 'axios'
 export const getItems = (type,url) => {
   return dispatch => {
     dispatch({
-      type: types.type
+      type: type(types.START)
     })
      axios.get(`${BASE_URL}/${url}`)
       .then(res => {
         dispatch({
-          type: types.type,
+          type: type(types.SUCCESS),
           payload: res.data
         })
       })
       .catch(error => {
         dispatch({
-          type: types.type,
+          type: type(types.ERROR),
           payload: error
         })
       })
   }
 }
 
-export const setItems = (type, url, post, callback) => {
+export const postItem = (type, url, data) => {
   return dispatch => {
     dispatch({
-      type: types.type
+      type: type(types.START),
+      payload: data
     })
-     axios.post(`${BASE_URL}/${url}`, {post})
+     axios.post(`${BASE_URL}/${url}`, data)
       .then(res => {
         dispatch({
-          type: types.type,
-          payload: post
+          type: type(types.SUCCESS),
+          payload: res.data
         })
-        dispatch(callback())
       })
       .catch(error => {
         dispatch({
-          type: types.type,
+          type: type(types.ERROR),
+          payload: error
+        })
+      })
+  }
+}
+
+export const putItem = (type, url, data, callback) => {
+  return dispatch => {
+    dispatch({
+      type: type(types.START),
+      payload: data
+    })
+    axios.put(`${BASE_URL}/${url}`, data)
+      .then(res => {
+        dispatch({
+          type: type(types.SUCCESS),
+          payload: res.data
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: type(types.ERROR),
+          payload: error
+        })
+      })
+  }
+}
+
+export const deleteItem = (type, url, data) => {
+  return dispatch => {
+    dispatch({
+      type: type(types.START),
+      payload: data
+    })
+    axios.delete(`${BASE_URL}/${url}`)
+      .then(res => {
+        dispatch({
+          type: type(types.SUCCESS),
+          payload: data
+        })
+      })
+      .catch(error => {
+        dispatch({
+          type: type(types.ERROR),
           payload: error
         })
       })
