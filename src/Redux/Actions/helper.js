@@ -1,4 +1,4 @@
-import *as types from './types'
+import * as types from './types'
 import {BASE_URL} from '../../config'
 import axios from 'axios'
 
@@ -45,7 +45,7 @@ export const postItem = (type, url, data) => {
   }
 }
 
-export const putItem = (type, url, data, callback) => {
+export const putItem = (type, url, data) => {
   return dispatch => {
     dispatch({
       type: type(types.START),
